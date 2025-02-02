@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-// import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-home',
@@ -20,15 +19,26 @@ export class HomeComponent {
     this.qrCodeDataUrl = qrCodeDataUrl;
   }
 
+  // async shareQRCode() {}
   async shareQRCode() {
-    //   try {
-    //     await Share.share({
-    //       title: 'My Contact Card',
-    //       text: 'Scan this QR code to save my contact information',
-    //       url: this.qrCodeDataUrl,
-    //     });
-    //   } catch (error) {
-    //     console.error('Error sharing QR code:', error);
-    //   }
+    if (this.isIos()) {
+      // For iOS, create an Apple Wallet pass (the link should point to a downloadable .pkpass file)
+      window.location.href = `https://example.com/path/to/your/pass.pkpass`;
+    } else if (this.isAndroid()) {
+      // For Android, you can direct users to Google Pay (pass data should ideally be in the Google Pay format)
+      window.location.href = `https://pay.google.com/gp/v/save/{YOUR_PASS_DATA}`;
+    } else {
+      alert('This functionality is supported only on iOS or Android devices');
+    }
+  }
+
+  // Check if the device is iOS
+  private isIos(): boolean {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+  }
+
+  // Check if the device is Android
+  private isAndroid(): boolean {
+    return /Android/.test(navigator.userAgent);
   }
 }

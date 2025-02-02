@@ -71,7 +71,10 @@
 }
 
 .qr-icon {
-  font-size: 1.5rem;
+  width: 25px;
+  height: 25px;
+  font-size: 36px;
+  color: #333;
 }
 
 .qr-subtitle {

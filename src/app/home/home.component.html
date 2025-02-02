@@ -16,7 +16,15 @@
   <div *ngIf="showScanMe" class="qr-code-section">
     <div class="qr-card glass-card">
       <h2 class="qr-title">
-        <span class="qr-icon">&#128273;</span> Your Digital Card
+        <h2 class="qr-title">
+          <img
+            *ngIf="qrCodeDataUrl"
+            [src]="qrCodeDataUrl"
+            alt="QR Code"
+            class="qr-icon"
+          />
+          Your Digital Card
+        </h2>
       </h2>
       <p class="qr-subtitle">Share your contact info instantly</p>
 

@@ -1,0 +1,91 @@
+<div class="contact-container">
+  <mat-card class="contact-card">
+    <mat-card-header>
+      <div class="header-content">
+        <mat-card-title>Set Your Contact Information</mat-card-title>
+        <mat-card-subtitle>Add as many contacts as you want</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="form-container">
+        <div class="form-fields">
+          <mat-form-field appearance="outline" class="contact-type">
+            <mat-label>Contact Type</mat-label>
+            <mat-select [(ngModel)]="newContactType" class="select-field">
+              <mat-option *ngFor="let type of contactTypes" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="contact-value">
+            <mat-label>Contact Value</mat-label>
+            <input
+              matInput
+              [(ngModel)]="newContactValue"
+              placeholder="Enter value (e.g., phone number, URL)"
+              class="input-field"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="action-button">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addContact()"
+            class="add-button"
+          >
+            <mat-icon>add_circle_outline</mat-icon>
+            <span class="button-text">Add Contact</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="contacts-list" *ngIf="userInfo.length > 0">
+        <h3 class="section-title">Your Contacts</h3>
+        <mat-list>
+          <mat-list-item
+            *ngFor="let contact of userInfo; let i = index"
+            class="contact-item"
+          >
+            <div class="contact-info">
+              <div class="icon-container">
+                <mat-icon [class]="contact.type.toLowerCase() + '-icon'">
+                  {{ getContactIcon(contact.type) }}
+                </mat-icon>
+              </div>
+              <div class="contact-text">
+                <span class="contact-type">{{ contact.type }}</span>
+                <span class="contact-value">{{ contact.value }}</span>
+              </div>
+            </div>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="removeContact(i)"
+              class="delete-button"
+              aria-label="Delete contact"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <div class="generate-button">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="submitUserInfo()"
+          [disabled]="userInfo.length === 0"
+          class="qr-button"
+        >
+          <mat-icon>qr_code</mat-icon>
+          <span class="button-text">Generate QR Code</span>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

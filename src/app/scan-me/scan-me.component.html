@@ -1,0 +1,13 @@
+<mat-card class="qr-card">
+  <mat-card-content>
+    <div class="qr-code-container">
+      <div class="qr-code-wrapper">
+        <img [src]="qrCodeDataUrl" alt="QR Code" *ngIf="qrCodeDataUrl" />
+        <div class="qr-code-overlay" *ngIf="qrCodeDataUrl">
+          <mat-icon class="scan-icon">qr_code_scanner</mat-icon>
+        </div>
+      </div>
+      <p *ngIf="!qrCodeDataUrl" class="loading-text">Generating QR code...</p>
+    </div>
+  </mat-card-content>
+</mat-card>

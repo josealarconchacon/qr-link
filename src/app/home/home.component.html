@@ -1,0 +1,39 @@
+<header class="app-header">
+  <h1 class="header-text">Find Me</h1>
+</header>
+
+<main class="gradient-background">
+  <div class="content-container" *ngIf="!showScanMe">
+    <div class="welcome-card glass-card">
+      <p class="welcome-text">Let's create your digital business card</p>
+      <app-set-user-info
+        (userInfoSubmitted)="onUserInfoSubmitted($event)"
+        class="user-info-form"
+      ></app-set-user-info>
+    </div>
+  </div>
+
+  <div *ngIf="showScanMe" class="qr-code-section">
+    <div class="qr-card glass-card">
+      <h2 class="qr-title">
+        <span class="qr-icon">&#128273;</span> Your Digital Card
+      </h2>
+      <p class="qr-subtitle">Share your contact info instantly</p>
+
+      <div class="qr-content">
+        <app-scan-me
+          [userInfo]="userInfo"
+          (qrCodeGenerated)="onQrCodeGenerated($event)"
+        ></app-scan-me>
+
+        <button
+          *ngIf="qrCodeDataUrl"
+          class="share-button"
+          (click)="shareQRCode()"
+        >
+          &#128257; Add Card To Wallet
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

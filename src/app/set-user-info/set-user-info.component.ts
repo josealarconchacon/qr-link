@@ -32,7 +32,7 @@ interface Contact {
   styleUrls: ['./set-user-info.component.css'],
 })
 export class SetUserInfoComponent {
-  userInfo: Contact[] = []; // Specify the type of the array here
+  userInfo: Contact[] = [];
   newContactType = '';
   newContactValue = '';
   contactTypes = [

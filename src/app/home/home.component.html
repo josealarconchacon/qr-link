@@ -1,5 +1,6 @@
 <header class="app-header">
   <h1 class="header-text">Find Me</h1>
+  <button class="auth-btn" (click)="onLoginSignOutClick()">Login</button>
 </header>
 
 <main class="gradient-background">
@@ -16,15 +17,13 @@
   <div *ngIf="showScanMe" class="qr-code-section">
     <div class="qr-card glass-card">
       <h2 class="qr-title">
-        <h2 class="qr-title">
-          <img
-            *ngIf="qrCodeDataUrl"
-            [src]="qrCodeDataUrl"
-            alt="QR Code"
-            class="qr-icon"
-          />
-          Your Digital Card
-        </h2>
+        <img
+          *ngIf="qrCodeDataUrl"
+          [src]="qrCodeDataUrl"
+          alt="QR Code"
+          class="qr-icon"
+        />
+        Your Digital Card
       </h2>
       <p class="qr-subtitle">Share your contact info instantly</p>
 
@@ -34,13 +33,18 @@
           (qrCodeGenerated)="onQrCodeGenerated($event)"
         ></app-scan-me>
 
-        <button
-          *ngIf="qrCodeDataUrl"
-          class="share-button"
-          (click)="shareQRCode()"
-        >
-          &#128257; Add Card To Wallet
-        </button>
+        <div class="button-container">
+          <button
+            *ngIf="qrCodeDataUrl"
+            class="share-button"
+            (click)="shareQRCode()"
+          >
+            &#128257; Add Card To Wallet
+          </button>
+          <button mat-button class="back-button" (click)="goBack()">
+            Back
+          </button>
+        </div>
       </div>
     </div>
   </div>

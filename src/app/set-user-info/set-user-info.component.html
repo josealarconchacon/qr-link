@@ -31,12 +31,7 @@
         </div>
 
         <div class="action-button">
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="addContact()"
-            class="add-button"
-          >
+          <button mat-raised-button (click)="addContact()" class="add-button">
             <mat-icon>add_circle_outline</mat-icon>
             <span class="button-text">Add Contact</span>
           </button>
@@ -45,33 +40,28 @@
 
       <div class="contacts-list" *ngIf="userInfo.length > 0">
         <h3 class="section-title">Your Contacts</h3>
-        <mat-list>
-          <mat-list-item
+        <div class="contact-items">
+          <div
             *ngFor="let contact of userInfo; let i = index"
             class="contact-item"
           >
-            <div class="contact-info">
-              <div class="icon-container">
-                <mat-icon [class]="contact.type.toLowerCase() + '-icon'">
-                  {{ getContactIcon(contact.type) }}
-                </mat-icon>
-              </div>
-              <div class="contact-text">
-                <span class="contact-type">{{ contact.type }}</span>
-                <span class="contact-value">{{ contact.value }}</span>
-              </div>
-            </div>
+            <mat-icon
+              class="contact-icon"
+              [class]="contact.type.toLowerCase() + '-icon'"
+            >
+              {{ getContactIcon(contact.type) }}
+            </mat-icon>
+            <span class="contact-value">{{ contact.value }}</span>
             <button
               mat-icon-button
-              color="warn"
               (click)="removeContact(i)"
               class="delete-button"
               aria-label="Delete contact"
             >
               <mat-icon>delete_outline</mat-icon>
             </button>
-          </mat-list-item>
-        </mat-list>
+          </div>
+        </div>
       </div>
 
       <div class="generate-button">

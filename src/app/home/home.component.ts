@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,8 @@ export class HomeComponent {
   showScanMe = false;
   qrCodeDataUrl = '';
 
+  constructor(private router: Router) {}
+
   onUserInfoSubmitted(userInfo: any[]) {
     this.userInfo = userInfo;
     this.showScanMe = true;
@@ -19,26 +22,14 @@ export class HomeComponent {
     this.qrCodeDataUrl = qrCodeDataUrl;
   }
 
-  // async shareQRCode() {}
-  async shareQRCode() {
-    if (this.isIos()) {
-      // For iOS, create an Apple Wallet pass (the link should point to a downloadable .pkpass file)
-      window.location.href = `https://example.com/path/to/your/pass.pkpass`;
-    } else if (this.isAndroid()) {
-      // For Android, you can direct users to Google Pay (pass data should ideally be in the Google Pay format)
-      window.location.href = `https://pay.google.com/gp/v/save/{YOUR_PASS_DATA}`;
-    } else {
-      alert('This functionality is supported only on iOS or Android devices');
-    }
+  async shareQRCode() {}
+
+  goBack() {
+    this.router.navigate(['/set-user-info']);
   }
 
-  // Check if the device is iOS
-  private isIos(): boolean {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent);
-  }
-
-  // Check if the device is Android
-  private isAndroid(): boolean {
-    return /Android/.test(navigator.userAgent);
+  onLoginSignOutClick() {
+    // Handle the login or signout logic here
+    console.log('Login or Signout clicked');
   }
 }

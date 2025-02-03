@@ -29,7 +29,6 @@ export class HomeComponent {
   }
 
   onLoginSignOutClick() {
-    // Handle the login or signout logic here
     console.log('Login or Signout clicked');
   }
 }

@@ -227,65 +227,28 @@
             userInfo.length
           }}</span>
         </div>
-        <div
-          class="contact-items"
-          cdkDropList
-          (cdkDropListDropped)="onDrop($event)"
-          role="list"
-        >
+        <div class="contact-items" role="list">
           <div
             *ngFor="let contact of userInfo; let i = index"
             class="contact-card mb-3"
             [class.animate-in]="isNewContact(i)"
-            cdkDrag
             role="listitem"
           >
             <div class="d-flex align-items-center p-3">
               <div
-                class="drag-handle me-2"
-                cdkDragHandle
-                role="button"
-                aria-label="Drag to reorder"
+                class="contact-icon me-3"
+                [ngClass]="
+                  'bg-' + getIconColorClass(contact.type, contact.customColor)
+                "
               >
-                <i class="bi bi-grip-vertical" aria-hidden="true"></i>
+                <i [class]="getContactIcon(contact)" class="text-white"></i>
               </div>
-              <div class="contact-icon-wrapper me-3">
-                <div
-                  class="contact-icon-bg"
-                  [ngClass]="
-                    contact.customColor
-                      ? 'bg-' + contact.customColor
-                      : 'bg-' + getIconColorClass(contact.type)
-                  "
-                >
-                  <i
-                    [class]="
-                      (contact.customIcon
-                        ? 'bi ' + contact.customIcon
-                        : getContactIcon(contact.type, contact.customType)) +
-                      ' text-white'
-                    "
-                    aria-hidden="true"
-                  ></i>
-                </div>
-              </div>
-              <div class="contact-info flex-grow-1 min-width-0">
-                <p class="contact-value text-truncate">{{ contact.value }}</p>
-                <div class="contact-type-badge">
-                  <span
-                    [class]="
-                      'badge bg-' +
-                      (contact.customColor || getIconColorClass(contact.type)) +
-                      ' bg-opacity-10 text-' +
-                      (contact.customColor || getIconColorClass(contact.type))
-                    "
-                  >
-                    {{ getDisplayType(contact) }}
-                  </span>
-                </div>
+              <div class="flex-grow-1">
+                <div class="contact-type">{{ getDisplayType(contact) }}</div>
+                <div class="contact-value">{{ contact.value }}</div>
               </div>
               <button
-                class="btn btn-icon ms-2"
+                class="btn btn-link text-danger"
                 (click)="removeContact(i)"
                 aria-label="Remove contact"
               >

@@ -1,17 +1,49 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Contact List</mat-card-title>
-  </mat-card-header>
+<div class="card glass-card">
+  <div class="card-body">
+    <h2 class="card-title mb-4">Your Contacts</h2>
 
-  <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let contact of contacts">
-        <div mat-line>{{ contact.type }}</div>
-        <div mat-line>{{ contact.value }}</div>
-        <button mat-raised-button color="primary" (click)="addContact(contact)">
-          Add
-        </button>
-      </mat-list-item>
-    </mat-list>
-  </mat-card-content>
-</mat-card>
+    <div class="contact-list">
+      <div
+        *ngFor="let contact of contacts; let i = index"
+        class="contact-item"
+        [attr.data-type]="contact.type"
+      >
+        <div class="contact-icon-wrapper">
+          <i [class]="getContactIcon(contact)"></i>
+        </div>
+        <div class="contact-details">
+          <div class="contact-type">{{ getDisplayType(contact) }}</div>
+          <div class="contact-value">{{ contact.value }}</div>
+        </div>
+        <div class="contact-actions">
+          <button
+            class="btn btn-outline-primary btn-sm me-2"
+            (click)="copyContact(contact)"
+            title="Copy contact"
+          >
+            <i class="bi bi-clipboard"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger btn-sm"
+            (click)="removeContact(i)"
+            title="Remove contact"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!contacts?.length" class="text-center py-5">
+      <p class="text-muted">
+        No contacts available yet. Add some contacts to get started!
+      </p>
+    </div>
+
+    <div *ngIf="contacts?.length" class="text-center mt-4">
+      <button class="btn btn-outline-danger" (click)="clearAllContacts()">
+        Clear All Contacts
+      </button>
+    </div>
+  </div>
+</div>

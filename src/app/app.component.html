@@ -1,3 +1,61 @@
-<app-home></app-home>
-<!-- <app-auth></app-auth> -->
-<router-outlet></router-outlet>
+<!-- Main container with responsive padding -->
+<div class="app-container">
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand" routerLink="/scan-me">
+        <i class="bi bi-qr-code-scan me-2"></i>
+        Connect
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/set-user-info"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-person-plus me-1"></i>Add Contact
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/scan-me" routerLinkActive="active">
+              <i class="bi bi-qr-code me-1"></i>Scan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/contact-list"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-list me-1"></i>Contacts
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content area with responsive padding -->
+  <main class="main-content">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <span class="text-muted">© 2024 Connect. All rights reserved.</span>
+    </div>
+  </footer>
+</div>

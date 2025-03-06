@@ -1,28 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import {
-  CdkDragDrop,
-  DragDropModule,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
-
-interface Contact {
-  type: string;
-  value: string;
-  timestamp?: number;
-  customType?: string;
-  customIcon?: string;
-  customColor?: string;
-  order?: number;
-}
+import { Router } from '@angular/router';
+import { ContactInfo } from '../models/contact-info';
+import { ContactService } from '../services/contact.service';
 
 interface ContactType {
   id: string;
@@ -35,24 +16,11 @@ interface ContactType {
 @Component({
   selector: 'app-set-user-info',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    MatButtonModule,
-    MatListModule,
-    DragDropModule,
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './set-user-info.component.html',
   styleUrls: ['./set-user-info.component.css'],
 })
-export class SetUserInfoComponent {
-  @Output() userInfoSubmitted = new EventEmitter<Contact[]>();
-
+export class SetUserInfoComponent implements OnInit {
   defaultContactTypes: ContactType[] = [
     { id: 'Phone', label: 'Phone', icon: 'bi bi-phone', color: 'success' },
     { id: 'Email', label: 'Email', icon: 'bi bi-envelope', color: 'primary' },
@@ -115,14 +83,12 @@ export class SetUserInfoComponent {
 
   customContactTypes: ContactType[] = [];
   allContactTypes: ContactType[] = [...this.defaultContactTypes];
-
+  userInfo: ContactInfo[] = [];
   newContactType = '';
   newContactValue = '';
   customContactType = '';
   customContactIcon = 'bi-bookmark-star';
   customContactColor = 'primary';
-  userInfo: Contact[] = [];
-  private readonly ANIMATION_DURATION = 2000; // 2 seconds
   showAllTypes = false;
   isAddingCustom = false;
 
@@ -132,6 +98,15 @@ export class SetUserInfoComponent {
     icon: 'bi-bookmark-star',
     color: 'primary',
   };
+
+  constructor(private contactService: ContactService, private router: Router) {}
+
+  ngOnInit() {
+    // Load existing contacts
+    this.contactService.contacts$.subscribe((contacts) => {
+      this.userInfo = contacts;
+    });
+  }
 
   selectContactType(type: string) {
     if (type === 'Custom') {
@@ -151,7 +126,17 @@ export class SetUserInfoComponent {
     }, 100);
   }
 
-  getContactIcon(type: string, customType?: string): string {
+  getContactIcon(type: string | ContactInfo, customType?: string): string {
+    if (typeof type === 'object') {
+      if (type.type === 'Custom' && type.customType) {
+        const customTypeConfig = this.customContactTypes.find(
+          (t) => t.label === type.customType
+        );
+        return customTypeConfig?.icon || 'bi bi-bookmark-star';
+      }
+      return this.getContactIcon(type.type, type.customType);
+    }
+
     if (type === 'Custom' && customType) {
       const customTypeConfig = this.customContactTypes.find(
         (t) => t.label === customType
@@ -169,6 +154,13 @@ export class SetUserInfoComponent {
     }
     const typeConfig = this.allContactTypes.find((t) => t.id === type);
     return typeConfig?.color || 'secondary';
+  }
+
+  getDisplayType(contact: ContactInfo): string {
+    return (
+      contact.customType ||
+      contact.type.charAt(0).toUpperCase() + contact.type.slice(1)
+    );
   }
 
   getPlaceholder(type: string): string {
@@ -197,7 +189,6 @@ export class SetUserInfoComponent {
   addCustomType() {
     if (!this.customContactType.trim()) return;
 
-    // Store the custom type details temporarily
     this.newCustomContact = {
       type: this.customContactType.trim(),
       value: '',
@@ -205,11 +196,9 @@ export class SetUserInfoComponent {
       color: this.customContactColor,
     };
 
-    // Switch to contact value input mode
     this.newContactType = 'Custom';
     this.isAddingCustom = false;
 
-    // Focus the contact value input
     setTimeout(() => {
       const input = document.getElementById('contactValue') as HTMLInputElement;
       if (input) {
@@ -220,8 +209,9 @@ export class SetUserInfoComponent {
 
   addContact() {
     if (this.newContactType && this.newContactValue) {
+      let newContact: ContactInfo;
+
       if (this.newContactType === 'Custom') {
-        // For custom types, first add the type to the list
         const customType = this.newCustomContact.type;
         if (!this.customContactTypes.some((t) => t.label === customType)) {
           const newCustomType: ContactType = {
@@ -235,80 +225,30 @@ export class SetUserInfoComponent {
           this.updateAllContactTypes();
         }
 
-        // Then create the contact
-        const newContact: Contact = {
+        newContact = {
           type: 'Custom',
           value: this.newContactValue.trim(),
-          timestamp: Date.now(),
           customType: this.newCustomContact.type,
           customIcon: this.newCustomContact.icon,
           customColor: this.newCustomContact.color,
-          order: this.userInfo.length,
-        };
-
-        this.userInfo.push(newContact);
-        this.newContactValue = '';
-        this.newCustomContact = {
-          type: '',
-          value: '',
-          icon: 'bi-bookmark-star',
-          color: 'primary',
         };
       } else {
-        // Handle regular contact types as before
-        const newContact: Contact = {
+        newContact = {
           type: this.newContactType,
           value: this.newContactValue.trim(),
-          timestamp: Date.now(),
-          order: this.userInfo.length,
         };
-
-        this.userInfo.push(newContact);
-        this.newContactValue = '';
       }
+
+      this.userInfo.push(newContact);
+      this.contactService.updateContacts(this.userInfo);
+      this.newContactValue = '';
+      this.newContactType = '';
     }
   }
 
   removeContact(index: number) {
-    const removedContact = this.userInfo[index];
     this.userInfo.splice(index, 1);
-
-    // If it was a custom type and no other contacts use it, remove from custom types
-    if (removedContact.customType) {
-      const isTypeStillInUse = this.userInfo.some(
-        (contact) => contact.customType === removedContact.customType
-      );
-      if (!isTypeStillInUse) {
-        this.customContactTypes = this.customContactTypes.filter(
-          (t) => t.label !== removedContact.customType
-        );
-        this.updateAllContactTypes();
-      }
-    }
-  }
-
-  onDrop(event: CdkDragDrop<Contact[]>) {
-    moveItemInArray(this.userInfo, event.previousIndex, event.currentIndex);
-    // Update order property
-    this.userInfo.forEach((contact, index) => {
-      contact.order = index;
-    });
-  }
-
-  submitUserInfo() {
-    if (this.userInfo.length > 0) {
-      this.userInfoSubmitted.emit(this.userInfo);
-    }
-  }
-
-  isNewContact(index: number): boolean {
-    const contact = this.userInfo[index];
-    if (!contact?.timestamp) return false;
-    return Date.now() - contact.timestamp < this.ANIMATION_DURATION;
-  }
-
-  getDisplayType(contact: Contact): string {
-    return contact.customType || contact.type;
+    this.contactService.updateContacts(this.userInfo);
   }
 
   private updateAllContactTypes() {
@@ -318,6 +258,13 @@ export class SetUserInfoComponent {
     ];
   }
 
+  submitUserInfo() {
+    if (this.userInfo.length > 0) {
+      this.contactService.updateContacts(this.userInfo);
+      this.router.navigate(['/scan-me']);
+    }
+  }
+
   toggleShowAllTypes() {
     this.showAllTypes = !this.showAllTypes;
   }
@@ -325,13 +272,15 @@ export class SetUserInfoComponent {
   cancelCustomType() {
     this.isAddingCustom = false;
     this.customContactType = '';
-    this.customContactIcon = 'bi-bookmark-star';
-    this.customContactColor = 'primary';
-    this.newCustomContact = {
-      type: '',
-      value: '',
-      icon: 'bi-bookmark-star',
-      color: 'primary',
-    };
+    this.newContactType = '';
+    this.newContactValue = '';
+  }
+
+  isNewContact(index: number): boolean {
+    return index === this.userInfo.length - 1;
+  }
+
+  onSubmit() {
+    this.submitUserInfo();
   }
 }

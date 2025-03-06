@@ -1,15 +1,13 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "dist/qr-link/*",
-      "use": "@vercel/static"
-    }
-  ],
+  "public": true,
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist/qr-link",
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/dist/qr-link/index.html"
-    }
-  ]
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "github": {
+    "silent": true
+  }
 }

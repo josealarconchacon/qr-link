@@ -1,44 +1,57 @@
-<main class="gradient-background">
-  <div class="content-container" *ngIf="!showScanMe">
-    <div class="welcome-card glass-card">
-      <p class="welcome-text">Let's create your digital business card</p>
-      <app-set-user-info
-        (userInfoSubmitted)="onUserInfoSubmitted($event)"
-        class="user-info-form"
-      ></app-set-user-info>
-    </div>
-  </div>
+<main class="min-vh-100 d-flex align-items-center">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div *ngIf="!showScanMe" class="card glass-card">
+          <div class="card-body p-4 p-md-5">
+            <h1 class="text-center mb-4">
+              Let's create your digital business card
+            </h1>
+            <app-set-user-info
+              (userInfoSubmitted)="onUserInfoSubmitted($event)"
+              class="user-info-form"
+            ></app-set-user-info>
+          </div>
+        </div>
 
-  <div *ngIf="showScanMe" class="qr-code-section">
-    <div class="qr-card glass-card">
-      <h2 class="qr-title">
-        <img
-          *ngIf="qrCodeDataUrl"
-          [src]="qrCodeDataUrl"
-          alt="QR Code"
-          class="qr-icon"
-        />
-        Your Digital Card
-      </h2>
-      <p class="qr-subtitle">Share your contact info instantly</p>
+        <div *ngIf="showScanMe" class="card glass-card">
+          <div class="card-body p-4 p-md-5">
+            <h2
+              class="text-center d-flex align-items-center justify-content-center gap-2 mb-3"
+            >
+              <img
+                *ngIf="qrCodeDataUrl"
+                [src]="qrCodeDataUrl"
+                alt="QR Code"
+                class="qr-icon"
+              />
+              Your Digital Card
+            </h2>
+            <p class="text-center text-muted mb-4">
+              Share your contact info instantly
+            </p>
 
-      <div class="qr-content">
-        <app-scan-me
-          [userInfo]="userInfo"
-          (qrCodeGenerated)="onQrCodeGenerated($event)"
-        ></app-scan-me>
+            <div class="d-flex flex-column align-items-center gap-4">
+              <app-scan-me
+                [userInfo]="userInfo"
+                (qrCodeGenerated)="onQrCodeGenerated($event)"
+              ></app-scan-me>
 
-        <div class="button-container">
-          <button
-            *ngIf="qrCodeDataUrl"
-            class="share-button"
-            (click)="shareQRCode()"
-          >
-            &#128257; Add Card To Wallet
-          </button>
-          <button mat-button class="back-button" (click)="goBack()">
-            Back
-          </button>
+              <div class="d-flex gap-3 w-100 justify-content-center">
+                <button
+                  *ngIf="qrCodeDataUrl"
+                  class="btn btn-primary flex-grow-1"
+                  (click)="shareQRCode()"
+                >
+                  <i class="bi bi-plus-circle"></i>
+                  Add Card To Wallet
+                </button>
+                <button class="btn btn-outline-secondary" (click)="goBack()">
+                  Back
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

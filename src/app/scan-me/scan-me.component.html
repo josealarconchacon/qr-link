@@ -1,13 +1,27 @@
-<mat-card class="qr-card">
-  <mat-card-content>
+<div class="card glass-card">
+  <div class="card-body p-4 p-md-5">
     <div class="qr-code-container">
-      <div class="qr-code-wrapper">
-        <img [src]="qrCodeDataUrl" alt="QR Code" *ngIf="qrCodeDataUrl" />
-        <div class="qr-code-overlay" *ngIf="qrCodeDataUrl">
-          <mat-icon class="scan-icon">qr_code_scanner</mat-icon>
+      <div class="qr-code-wrapper position-relative">
+        <img
+          [src]="qrCodeDataUrl"
+          alt="QR Code"
+          *ngIf="qrCodeDataUrl"
+          class="img-fluid rounded"
+        />
+        <div
+          class="qr-code-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+        >
+          <div
+            class="scan-icon rounded-circle d-flex align-items-center justify-content-center"
+          >
+            <i class="bi bi-qr-code-scan"></i>
+          </div>
         </div>
       </div>
-      <p *ngIf="!qrCodeDataUrl" class="loading-text">Generating QR code...</p>
+      <p *ngIf="!qrCodeDataUrl" class="loading-text">
+        <i class="bi bi-arrow-repeat me-2"></i>
+        Generating QR code...
+      </p>
     </div>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>

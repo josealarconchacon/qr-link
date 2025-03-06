@@ -1,81 +1,314 @@
 <div class="contact-container">
-  <mat-card class="contact-card">
-    <mat-card-header>
-      <div class="header-content">
-        <mat-card-title>Set Your Contact Information</mat-card-title>
-        <mat-card-subtitle>Add as many contacts as you want</mat-card-subtitle>
-      </div>
-    </mat-card-header>
+  <div class="card glass-card">
+    <div class="card-header bg-transparent text-center">
+      <h1 class="card-title">Let's create your digital business card</h1>
+      <p class="card-subtitle">Choose how people can reach you</p>
+    </div>
 
-    <mat-card-content>
-      <div class="form-container">
-        <div class="form-fields">
-          <mat-form-field appearance="outline" class="contact-type">
-            <mat-label>Contact Type</mat-label>
-            <mat-select [(ngModel)]="newContactType" class="select-field">
-              <mat-option *ngFor="let type of contactTypes" [value]="type">
-                {{ type }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+    <div class="card-body p-4">
+      <!-- Contact Type Selection -->
+      <div
+        class="contact-type-container"
+        role="group"
+        aria-label="Contact type selection"
+      >
+        <div class="contact-type-grid">
+          <button
+            *ngFor="let type of allContactTypes"
+            class="contact-type-btn"
+            [class.active]="newContactType === type.id"
+            (click)="selectContactType(type.id)"
+            [attr.aria-label]="'Select ' + type.label + ' contact type'"
+            [attr.aria-pressed]="newContactType === type.id"
+          >
+            <div class="contact-type-icon" [ngClass]="'bg-' + type.color">
+              <i [class]="type.icon + ' text-white'" aria-hidden="true"></i>
+            </div>
+            <span class="contact-type-label">{{ type.label }}</span>
+          </button>
 
-          <mat-form-field appearance="outline" class="contact-value">
-            <mat-label>Contact Value</mat-label>
-            <input
-              matInput
-              [(ngModel)]="newContactValue"
-              placeholder="Enter value (e.g., phone number, URL)"
-              class="input-field"
-            />
-          </mat-form-field>
-        </div>
-
-        <div class="action-button">
-          <button mat-raised-button (click)="addContact()" class="add-button">
-            <mat-icon>add_circle_outline</mat-icon>
-            <span class="button-text">Add Contact</span>
+          <!-- Add Custom Type Button -->
+          <button
+            class="contact-type-btn add-custom-btn"
+            (click)="selectContactType('Custom')"
+            *ngIf="!isAddingCustom"
+            aria-label="Add custom contact type"
+          >
+            <div class="contact-type-icon bg-warning">
+              <i class="bi bi-plus-lg text-white" aria-hidden="true"></i>
+            </div>
+            <span class="contact-type-label">Add Custom</span>
           </button>
         </div>
-      </div>
 
-      <div class="contacts-list" *ngIf="userInfo.length > 0">
-        <h3 class="section-title">Your Contacts</h3>
-        <div class="contact-items">
-          <div
-            *ngFor="let contact of userInfo; let i = index"
-            class="contact-item"
-          >
-            <mat-icon
-              class="contact-icon"
-              [class]="contact.type.toLowerCase() + '-icon'"
-            >
-              {{ getContactIcon(contact.type) }}
-            </mat-icon>
-            <span class="contact-value">{{ contact.value }}</span>
-            <button
-              mat-icon-button
-              (click)="removeContact(i)"
-              class="delete-button"
-              aria-label="Delete contact"
-            >
-              <mat-icon>delete_outline</mat-icon>
-            </button>
+        <!-- Custom Type Creator -->
+        <div
+          class="custom-type-creator"
+          *ngIf="isAddingCustom"
+          role="dialog"
+          aria-labelledby="customTypeTitle"
+        >
+          <div class="card">
+            <div class="card-body">
+              <h5 class="mb-3" id="customTypeTitle">
+                Create Custom Contact Type
+              </h5>
+
+              <!-- Custom Type Name -->
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="customContactType"
+                  id="customTypeName"
+                  placeholder="Enter type name"
+                  aria-label="Custom contact type name"
+                  autocomplete="off"
+                />
+                <label for="customTypeName">Contact Type Name</label>
+              </div>
+
+              <!-- Icon Selection -->
+              <div class="mb-3">
+                <label class="form-label" id="iconGridLabel">Select Icon</label>
+                <div
+                  class="icon-grid"
+                  role="radiogroup"
+                  aria-labelledby="iconGridLabel"
+                >
+                  <button
+                    *ngFor="let icon of availableIcons"
+                    class="icon-btn"
+                    [class.active]="customContactIcon === icon"
+                    (click)="customContactIcon = icon"
+                    type="button"
+                    role="radio"
+                    [attr.aria-checked]="customContactIcon === icon"
+                    [attr.aria-label]="'Select ' + icon + ' icon'"
+                  >
+                    <i class="bi {{ icon }}" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Color Selection -->
+              <div class="mb-4">
+                <label class="form-label" id="colorGridLabel"
+                  >Select Color</label
+                >
+                <div
+                  class="color-grid"
+                  role="radiogroup"
+                  aria-labelledby="colorGridLabel"
+                >
+                  <button
+                    *ngFor="let color of availableColors"
+                    class="color-btn"
+                    [class.active]="customContactColor === color.value"
+                    (click)="customContactColor = color.value"
+                    [style.background-color]="'var(--bs-' + color.value + ')'"
+                    type="button"
+                    role="radio"
+                    [attr.aria-checked]="customContactColor === color.value"
+                    [attr.aria-label]="'Select ' + color.label + ' color'"
+                  >
+                    <span class="color-preview"></span>
+                    <span class="color-label">{{ color.label }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex gap-2">
+                <button
+                  class="btn btn-primary flex-grow-1"
+                  (click)="addCustomType()"
+                  [disabled]="!customContactType.trim()"
+                  aria-label="Add custom contact type"
+                >
+                  <i class="bi bi-check-lg me-2" aria-hidden="true"></i>
+                  Add Type
+                </button>
+                <button
+                  class="btn btn-light"
+                  (click)="cancelCustomType()"
+                  aria-label="Cancel adding custom type"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="generate-button">
+      <!-- Contact Value Input -->
+      <div class="mb-4" *ngIf="!isAddingCustom">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control form-control-lg"
+            [(ngModel)]="newContactValue"
+            id="contactValue"
+            [placeholder]="
+              newContactType === 'Custom'
+                ? 'Enter ' + newCustomContact.type + ' value'
+                : getPlaceholder(newContactType)
+            "
+            [type]="getInputType(newContactType)"
+            (keyup.enter)="addContact()"
+            [attr.aria-label]="
+              newContactType === 'Custom'
+                ? 'Enter ' + newCustomContact.type + ' value'
+                : getPlaceholder(newContactType)
+            "
+            autocomplete="off"
+          />
+          <label for="contactValue" class="d-flex align-items-center">
+            <i
+              [class]="
+                (newContactType === 'Custom'
+                  ? 'bi ' + newCustomContact.icon
+                  : getContactIcon(newContactType)) + ' me-2'
+              "
+              [style.color]="
+                newContactType === 'Custom'
+                  ? 'var(--bs-' + newCustomContact.color + ')'
+                  : ''
+              "
+              aria-hidden="true"
+            ></i>
+            <span>{{
+              newContactType === "Custom"
+                ? "Enter " + newCustomContact.type + " value"
+                : getPlaceholder(newContactType)
+            }}</span>
+          </label>
+        </div>
+        <div class="text-muted small mt-2" *ngIf="newContactType === 'Custom'">
+          <i class="bi bi-info-circle me-1"></i>
+          Add contact information for your new custom type "{{
+            newCustomContact.type
+          }}"
+        </div>
+      </div>
+
+      <!-- Add Button -->
+      <div class="d-grid" *ngIf="!isAddingCustom">
         <button
-          mat-raised-button
-          color="accent"
-          (click)="submitUserInfo()"
-          [disabled]="userInfo.length === 0"
-          class="qr-button"
+          class="btn btn-primary btn-lg"
+          (click)="addContact()"
+          [disabled]="!newContactType || !newContactValue"
+          aria-label="Add contact information"
         >
-          <mat-icon>qr_code</mat-icon>
-          <span class="button-text">Generate QR Code</span>
+          <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+          {{
+            newContactType === "Custom"
+              ? "Add " + newCustomContact.type + " Contact"
+              : "Add Contact"
+          }}
         </button>
       </div>
-    </mat-card-content>
-  </mat-card>
+
+      <!-- Contact List -->
+      <div
+        class="contacts-list mt-4"
+        *ngIf="userInfo.length > 0"
+        role="list"
+        aria-label="Added contacts"
+      >
+        <hr class="my-4" />
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <h4 class="h5 mb-0">
+            <i class="bi bi-person-vcard me-2" aria-hidden="true"></i>Your
+            Contacts
+          </h4>
+          <span class="badge bg-primary" role="status">{{
+            userInfo.length
+          }}</span>
+        </div>
+        <div
+          class="contact-items"
+          cdkDropList
+          (cdkDropListDropped)="onDrop($event)"
+          role="list"
+        >
+          <div
+            *ngFor="let contact of userInfo; let i = index"
+            class="contact-card mb-3"
+            [class.animate-in]="isNewContact(i)"
+            cdkDrag
+            role="listitem"
+          >
+            <div class="d-flex align-items-center p-3">
+              <div
+                class="drag-handle me-2"
+                cdkDragHandle
+                role="button"
+                aria-label="Drag to reorder"
+              >
+                <i class="bi bi-grip-vertical" aria-hidden="true"></i>
+              </div>
+              <div class="contact-icon-wrapper me-3">
+                <div
+                  class="contact-icon-bg"
+                  [ngClass]="
+                    contact.customColor
+                      ? 'bg-' + contact.customColor
+                      : 'bg-' + getIconColorClass(contact.type)
+                  "
+                >
+                  <i
+                    [class]="
+                      (contact.customIcon
+                        ? 'bi ' + contact.customIcon
+                        : getContactIcon(contact.type, contact.customType)) +
+                      ' text-white'
+                    "
+                    aria-hidden="true"
+                  ></i>
+                </div>
+              </div>
+              <div class="contact-info flex-grow-1 min-width-0">
+                <p class="contact-value text-truncate">{{ contact.value }}</p>
+                <div class="contact-type-badge">
+                  <span
+                    [class]="
+                      'badge bg-' +
+                      (contact.customColor || getIconColorClass(contact.type)) +
+                      ' bg-opacity-10 text-' +
+                      (contact.customColor || getIconColorClass(contact.type))
+                    "
+                  >
+                    {{ getDisplayType(contact) }}
+                  </span>
+                </div>
+              </div>
+              <button
+                class="btn btn-icon ms-2"
+                (click)="removeContact(i)"
+                aria-label="Remove contact"
+              >
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate QR Button -->
+      <div class="sticky-bottom" *ngIf="userInfo.length > 0">
+        <hr class="my-4" />
+        <button
+          class="btn btn-primary btn-lg w-100"
+          (click)="submitUserInfo()"
+          [disabled]="userInfo.length === 0"
+          aria-label="Generate QR code for your contacts"
+        >
+          <i class="bi bi-qr-code me-2" aria-hidden="true"></i>
+          Generate QR Code
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

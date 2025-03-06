@@ -25,7 +25,8 @@ export class HomeComponent {
   async shareQRCode() {}
 
   goBack() {
-    this.router.navigate(['/set-user-info']);
+    this.showScanMe = false;
+    this.qrCodeDataUrl = '';
   }
 
   onLoginSignOutClick() {

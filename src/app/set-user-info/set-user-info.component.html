@@ -6,7 +6,6 @@
     </div>
 
     <div class="card-body p-4">
-      <!-- Contact Type Selection -->
       <div
         class="contact-type-container"
         role="group"
@@ -27,7 +26,6 @@
             <span class="contact-type-label">{{ type.label }}</span>
           </button>
 
-          <!-- Add Custom Type Button -->
           <button
             class="contact-type-btn add-custom-btn"
             (click)="selectContactType('Custom')"
@@ -41,7 +39,6 @@
           </button>
         </div>
 
-        <!-- Custom Type Creator -->
         <div
           class="custom-type-creator"
           *ngIf="isAddingCustom"
@@ -54,7 +51,6 @@
                 Create Custom Contact Type
               </h5>
 
-              <!-- Custom Type Name -->
               <div class="form-floating mb-3">
                 <input
                   type="text"
@@ -68,7 +64,6 @@
                 <label for="customTypeName">Contact Type Name</label>
               </div>
 
-              <!-- Icon Selection -->
               <div class="mb-3">
                 <label class="form-label" id="iconGridLabel">Select Icon</label>
                 <div
@@ -91,7 +86,6 @@
                 </div>
               </div>
 
-              <!-- Color Selection -->
               <div class="mb-4">
                 <label class="form-label" id="colorGridLabel"
                   >Select Color</label
@@ -118,7 +112,6 @@
                 </div>
               </div>
 
-              <!-- Action Buttons -->
               <div class="d-flex gap-2">
                 <button
                   class="btn btn-primary flex-grow-1"
@@ -142,7 +135,6 @@
         </div>
       </div>
 
-      <!-- Contact Value Input -->
       <div class="mb-4" *ngIf="!isAddingCustom">
         <div class="form-floating">
           <input
@@ -210,7 +202,6 @@
         </button>
       </div>
 
-      <!-- Contact List -->
       <div
         class="contacts-list mt-4"
         *ngIf="userInfo.length > 0"

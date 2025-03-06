@@ -145,7 +145,6 @@
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 576px) {
   .qr-code-wrapper {
     max-width: 300px;
@@ -176,7 +175,6 @@
   }
 }
 
-/* Mobile styles */
 @media (max-width: 576px) {
   .qr-code-container {
     padding: 0.5rem;
@@ -200,7 +198,6 @@
   }
 }
 
-/* Tablet styles */
 @media (min-width: 577px) and (max-width: 768px) {
   .qr-code-container {
     padding: 1rem;
@@ -220,7 +217,6 @@
   }
 }
 
-/* Desktop styles */
 @media (min-width: 769px) {
   .qr-code-container {
     padding: 1.5rem;

@@ -110,7 +110,6 @@ button {
   transform: translateY(-1px);
 }
 
-/* Contact type specific styles */
 .contact-item[data-type="linkedin"] .contact-icon-wrapper {
   background: linear-gradient(135deg, #0077b5, #00a0dc);
   color: white;
@@ -167,7 +166,6 @@ button {
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 576px) {
   .contact-list {
     grid-template-columns: 1fr;

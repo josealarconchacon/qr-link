@@ -1,46 +1,64 @@
-<div class="card glass-card">
-  <div class="card-body p-4 p-md-5">
-    <div class="qr-code-container">
-      <div class="qr-code-wrapper position-relative">
-        <div class="qr-code-background rounded-4"></div>
-        <img
-          [src]="qrCodeDataUrl"
-          alt="QR Code"
-          *ngIf="qrCodeDataUrl"
-          class="img-fluid rounded-4 qr-code-image"
-        />
+<div class="container py-4 py-md-5">
+  <div class="card glass-card shadow-lg animate__animated animate__fadeIn">
+    <div class="card-body p-4 p-md-5">
+      <div class="qr-code-container">
+        <!-- QR Code Wrapper -->
         <div
-          class="qr-code-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+          class="qr-code-wrapper position-relative mb-4"
+          [ngClass]="{ 'animate__animated animate__zoomIn': qrCodeDataUrl }"
         >
-          <div class="qr-code-actions">
-            <button
-              class="btn btn-light btn-lg rounded-circle me-2"
-              (click)="downloadQRCode()"
-              title="Download QR Code"
-            >
-              <i class="bi bi-download"></i>
-            </button>
-            <div
-              class="scan-icon rounded-circle d-flex align-items-center justify-content-center"
-            >
-              <i class="bi bi-qr-code-scan"></i>
+          <div class="qr-code-background rounded-4 shadow-sm"></div>
+
+          <!-- QR Code Image -->
+          <img
+            *ngIf="qrCodeDataUrl"
+            [src]="qrCodeDataUrl"
+            alt="QR Code"
+            class="img-fluid rounded-4 qr-code-image"
+          />
+
+          <div class="qr-code-overlay rounded-4">
+            <div class="qr-code-actions">
+              <button
+                class="btn btn-light btn-lg rounded-circle shadow-sm animate__animated animate__pulse animate__infinite"
+                (click)="downloadQRCode()"
+                title="Download QR Code"
+              >
+                <i class="bi bi-download"></i>
+              </button>
+              <div class="scan-icon rounded-circle shadow-sm">
+                <i class="bi bi-qr-code-scan"></i>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="!qrCodeDataUrl" class="loading-container text-center mt-4">
-        <div class="loading-spinner mb-3">
-          <i class="bi bi-arrow-repeat"></i>
+
+        <!-- Loading State -->
+        <div
+          *ngIf="!qrCodeDataUrl"
+          class="loading-container text-center animate__animated animate__fadeIn"
+        >
+          <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-muted fw-medium">Crafting your QR code...</p>
         </div>
-        <p class="loading-text">Generating your beautiful QR code...</p>
-      </div>
-      <div *ngIf="qrCodeDataUrl" class="text-center mt-4">
-        <p class="text-muted mb-2">
-          Scan this QR code to add the contact information
-        </p>
-        <button class="btn btn-primary" (click)="downloadQRCode()">
-          <i class="bi bi-download me-2"></i>Download QR Code
-        </button>
+
+        <div
+          *ngIf="qrCodeDataUrl"
+          class="text-center animate__animated animate__fadeInUp"
+        >
+          <p class="text-muted mb-3 fw-medium">
+            Scan to instantly save contact details
+          </p>
+          <button
+            class="btn btn-primary btn-lg px-4 py-2 shadow-sm animate__animated animate__pulse animate__delay-2s"
+            (click)="downloadQRCode()"
+          >
+            <i class="bi bi-download me-2"></i>
+            Download QR Code
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactInfo } from '../models/contact-info';
 import { ContactService } from '../services/contact.service';
 import { Subscription } from 'rxjs';
-
+import * as bootstrap from 'bootstrap';
 @Component({
   selector: 'app-contact-list',
   standalone: true,
@@ -11,18 +11,25 @@ import { Subscription } from 'rxjs';
   templateUrl: './contact-list.component.html',
   styleUrls: ['./contact-list.component.css'],
 })
-export class ContactListComponent implements OnInit, OnDestroy {
+export class ContactListComponent implements OnInit, OnDestroy, AfterViewInit {
   contacts: ContactInfo[] = [];
-  private subscription: Subscription;
+  private subscription: Subscription | undefined;
 
-  constructor(private contactService: ContactService) {
+  constructor(private contactService: ContactService) {}
+
+  ngOnInit() {
     this.subscription = this.contactService.contacts$.subscribe((contacts) => {
       this.contacts = contacts;
     });
   }
 
-  ngOnInit() {
-    // Initial contacts load is handled by the subscription in the constructor
+  ngAfterViewInit() {
+    const tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    tooltipTriggerList.map(
+      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+    );
   }
 
   ngOnDestroy() {
@@ -70,7 +77,6 @@ export class ContactListComponent implements OnInit, OnDestroy {
     const text = `${this.getDisplayType(contact)}: ${contact.value}`;
     try {
       await navigator.clipboard.writeText(text);
-      // You could add a toast notification here if you want
     } catch (err) {
       console.error('Failed to copy contact:', err);
     }

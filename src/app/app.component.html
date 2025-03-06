@@ -1,62 +1,9 @@
-<div class="app-container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <div class="container">
-      <a class="navbar-brand" routerLink="/scan-me">
-        <i class="bi bi-qr-code-scan me-2"></i>
-        Connect
-      </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        (click)="toggleNavbar()"
-        [attr.aria-expanded]="!isNavbarCollapsed"
-        aria-controls="navbarNav"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="collapse navbar-collapse"
-        [class.show]="!isNavbarCollapsed"
-        id="navbarNav"
-      >
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="/set-user-info"
-              routerLinkActive="active"
-            >
-              <i class="bi bi-person-plus me-1"></i>Add Contact
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/scan-me" routerLinkActive="active">
-              <i class="bi bi-qr-code me-1"></i>Scan
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="/contact-list"
-              routerLinkActive="active"
-            >
-              <i class="bi bi-list me-1"></i>Contacts
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+<div class="app-container animate__animated animate__fadeIn">
+  <app-navbar></app-navbar>
   <main class="main-content">
-    <div class="container">
+    <div class="container custom-container">
       <router-outlet></router-outlet>
     </div>
   </main>
-
-  <footer class="footer mt-auto py-3 bg-light">
-    <div class="container text-center">
-      <span class="text-muted">© 2024 Connect. All rights reserved.</span>
-    </div>
-  </footer>
+  <app-footer></app-footer>
 </div>

@@ -5,3 +5,11 @@ export interface ContactInfo {
   customIcon?: string;
   customColor?: string;
 }
+
+export interface ContactType {
+  id: string;
+  label: string;
+  icon: string;
+  color: string;
+  isCustom?: boolean;
+}

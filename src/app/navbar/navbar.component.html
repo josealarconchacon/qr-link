@@ -1,0 +1,70 @@
+<nav
+  class="navbar navbar-expand-lg fixed-top custom-navbar animate__animated animate__fadeInDown"
+>
+  <div class="container">
+    <!-- Brand -->
+    <a
+      class="navbar-brand fw-bold d-flex align-items-center"
+      routerLink="/scan-me"
+    >
+      <i
+        class="bi bi-qr-code-scan me-2 animate__animated animate__pulse animate__infinite"
+      ></i>
+      <span class="brand-text">Connect</span>
+    </a>
+
+    <!-- Toggler -->
+    <button
+      class="navbar-toggler custom-toggler"
+      type="button"
+      (click)="toggleNavbar()"
+      [attr.aria-expanded]="!isNavbarCollapsed"
+      aria-controls="navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Content -->
+    <div
+      class="collapse navbar-collapse"
+      [ngClass]="{ show: !isNavbarCollapsed }"
+      id="navbarNav"
+    >
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item">
+          <a
+            class="nav-link custom-nav-link"
+            routerLink="/set-user-info"
+            routerLinkActive="active"
+            (click)="closeNavbar()"
+          >
+            <i class="bi bi-person-plus me-1"></i>
+            <span>Add Contact</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link custom-nav-link"
+            routerLink="/scan-me"
+            routerLinkActive="active"
+            (click)="closeNavbar()"
+          >
+            <i class="bi bi-qr-code me-1"></i>
+            <span>Scan</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link custom-nav-link"
+            routerLink="/contact-list"
+            routerLinkActive="active"
+            (click)="closeNavbar()"
+          >
+            <i class="bi bi-list me-1"></i>
+            <span>Contacts</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -12,15 +12,25 @@
 @import "./app/styles/components/contact-type-selector.css";
 @import "./app/styles/components/custom-type-creator.css";
 
+/* Global CSS Variables */
 :root {
+  --primary-color: #3b82f6;
+  --primary-dark: #2563eb;
+  --accent-color: #60a5fa;
+  --primary-rgb: 59, 130, 246;
+  --accent-rgb: 96, 165, 250;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --info-color: #3b82f6;
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
   --card: 0 0% 100%;
   --card-foreground: 222.2 84% 4.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 84% 4.9%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
   --secondary: 210 40% 96.1%;
   --secondary-foreground: 222.2 47.4% 11.2%;
   --muted: 210 40% 96.1%;
@@ -64,9 +74,7 @@
   --spacing-xl: 3rem;
 
   /* Global styles */
-  --primary-color: #3498db;
   --secondary-color: #2c3e50;
-  --accent-color: #e74c3c;
   --text-color: #2c3e50;
   --light-bg: #f8f9fa;
   --border-color: #dee2e6;
@@ -708,7 +716,7 @@ h2 {
 
 /* Animation classes */
 .fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .slide-up {
@@ -726,12 +734,12 @@ h2 {
 
 @keyframes slideUp {
   from {
-    transform: translateY(20px);
     opacity: 0;
+    transform: translateY(20px);
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 

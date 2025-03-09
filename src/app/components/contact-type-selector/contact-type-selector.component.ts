@@ -43,14 +43,13 @@ import { ContactType } from 'src/app/models/contact-info';
         </div>
       </div>
       <div class="custom-type-container" *ngIf="isAddingCustom">
-        <div class="custom-type-overlay" (click)="onTypeSelect('')"></div>
         <div class="custom-type-content">
           <ng-content></ng-content>
         </div>
       </div>
     </div>
   `,
-  styles: [],
+  styleUrls: ['../../styles/components/contact-type-selector.css'],
 })
 export class ContactTypeSelectorComponent {
   @Input() contactTypes: ContactType[] = [];

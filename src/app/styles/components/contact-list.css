@@ -1,0 +1,138 @@
+/* Contact List Component Styles */
+.contact-list {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.contact-list .card {
+  transition: box-shadow 0.3s ease;
+  max-width: 100%;
+}
+
+.contact-list .card:hover {
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.contact-list .contact-icon {
+  width: clamp(2rem, 5vw, 2.75rem);
+  height: clamp(2rem, 5vw, 2.75rem);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.contact-list .list-group-item:hover .contact-icon {
+  transform: scale(1.05);
+}
+
+.contact-list .list-group-item {
+  border: none;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.contact-list .list-group-item.border-start {
+  border-left-width: clamp(2px, 0.5vw, 4px) !important;
+}
+
+.contact-list .btn-sm {
+  width: clamp(1.75rem, 4vw, 2.25rem);
+  height: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: clamp(1.75rem, 4vw, 2.25rem);
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.contact-list .btn-sm:hover {
+  transform: scale(1.1);
+  background-color: var(--bs-gray-100);
+}
+
+.contact-list .copied-text {
+  transition: opacity 0.2s ease;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  padding: 0.25rem clamp(0.5rem, 1.5vw, 0.75rem);
+  border-radius: 1rem;
+  white-space: nowrap;
+}
+
+.contact-list .action-buttons {
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.contact-list .list-group-item:hover .action-buttons {
+  opacity: 1;
+}
+
+.contact-list small {
+  opacity: 0.8;
+  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+}
+
+.contact-list h5 {
+  font-size: clamp(1.1rem, 3vw, 1.25rem);
+}
+
+.contact-list .badge {
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+}
+
+/* Responsive styles */
+@media (max-width: 576px) {
+  .contact-list .container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .contact-list .list-group-item {
+    padding: 0.75rem 1rem;
+  }
+
+  .contact-list .action-buttons {
+    gap: 0.5rem !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .contact-list .btn-sm {
+    width: 1.75rem;
+    height: 1.75rem;
+    line-height: 1.75rem;
+  }
+
+  .contact-list .contact-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .contact-list .copied-text {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .contact-list .contact-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .contact-list .btn-sm {
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .contact-list .contact-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .contact-list .btn-sm {
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+  }
+}

@@ -1,0 +1,17 @@
+/* Import external styles */
+@import "~animate.css/animate.min.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* Import base styles */
+@import "./base/_variables.css";
+@import "./base/_base.css";
+
+/* Import utilities */
+@import "./utilities/_utilities.css";
+
+/* Import component styles */
+@import "./components/contact-list.css";
+@import "./components/contact-input.css";
+@import "./components/contact-type-selector.css";
+@import "./components/custom-type-creator.css";

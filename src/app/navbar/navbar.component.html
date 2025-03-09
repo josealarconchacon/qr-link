@@ -1,14 +1,18 @@
 <nav
   class="navbar navbar-expand-lg fixed-top custom-navbar animate__animated animate__fadeInDown"
+  role="navigation"
+  aria-label="Main navigation"
 >
   <div class="container">
     <!-- Brand -->
     <a
       class="navbar-brand fw-bold d-flex align-items-center"
       routerLink="/scan-me"
+      aria-label="Connect - Home"
     >
       <i
         class="bi bi-qr-code-scan me-2 animate__animated animate__pulse animate__infinite"
+        aria-hidden="true"
       ></i>
       <span class="brand-text">Connect</span>
     </a>
@@ -20,8 +24,9 @@
       (click)="toggleNavbar()"
       [attr.aria-expanded]="!isNavbarCollapsed"
       aria-controls="navbarNav"
+      aria-label="Toggle navigation menu"
     >
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon" aria-hidden="true"></span>
     </button>
 
     <!-- Navbar Content -->
@@ -29,28 +34,33 @@
       class="collapse navbar-collapse"
       [ngClass]="{ show: !isNavbarCollapsed }"
       id="navbarNav"
+      role="menubar"
     >
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item">
+        <li class="nav-item" role="none">
           <a
             class="nav-link custom-nav-link"
             routerLink="/set-user-info"
             routerLinkActive="active"
             (click)="closeNavbar()"
+            role="menuitem"
+            [attr.aria-current]="isActive('/set-user-info') ? 'page' : null"
           >
-            <i class="bi bi-person-plus me-1"></i>
+            <i class="bi bi-person-plus me-1" aria-hidden="true"></i>
             <span>Add Contact</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" role="none">
           <a
             class="nav-link custom-nav-link"
             routerLink="/scan-me"
             routerLinkActive="active"
             (click)="closeNavbar()"
+            role="menuitem"
+            [attr.aria-current]="isActive('/scan-me') ? 'page' : null"
           >
-            <i class="bi bi-qr-code me-1"></i>
-            <span>Scan</span>
+            <i class="bi bi-qr-code me-1" aria-hidden="true"></i>
+            <span>Scan QR</span>
           </a>
         </li>
         <li class="nav-item">

@@ -1,0 +1,163 @@
+.contact-type-wrapper {
+  position: relative;
+}
+
+.contact-type-container {
+  position: relative;
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-sm);
+}
+
+.contact-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.contact-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.contact-type-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-type-btn.active {
+  background: var(--bs-primary);
+  color: white;
+  border-color: var(--bs-primary);
+}
+
+.contact-type-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.contact-type-btn.active .contact-type-icon {
+  background: white !important;
+  color: var(--bs-primary) !important;
+}
+
+.contact-type-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.add-custom-btn {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.add-custom-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.add-custom-btn .contact-type-icon {
+  background: var(--bs-warning) !important;
+}
+
+.add-custom-btn:hover .contact-type-icon {
+  transform: scale(1.1);
+}
+
+.custom-type-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.custom-type-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: -1;
+}
+
+.custom-type-content {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.dark .contact-type-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .add-custom-btn {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dark .add-custom-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dark .custom-type-content {
+  background: #1a1f36;
+}
+
+@media (max-width: 576px) {
+  .contact-type-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .contact-type-btn {
+    padding: 0.75rem;
+  }
+
+  .contact-type-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .contact-type-label {
+    font-size: 0.75rem;
+  }
+
+  .custom-type-container {
+    padding: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-type-btn,
+  .contact-type-icon {
+    transition: none;
+  }
+}

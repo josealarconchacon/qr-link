@@ -21,28 +21,30 @@
   align-items: center;
   gap: 0.5rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.75rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
   transition: all 0.3s ease;
   cursor: pointer;
+  color: var(--text-primary);
 }
 
 .contact-type-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+  background-color: var(--hover-color);
 }
 
 .contact-type-btn.active {
-  background: var(--bs-primary);
+  background-color: var(--accent-color);
   color: white;
-  border-color: var(--bs-primary);
+  border-color: var(--accent-color);
 }
 
 .contact-type-icon {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,8 +53,8 @@
 }
 
 .contact-type-btn.active .contact-type-icon {
-  background: white !important;
-  color: var(--bs-primary) !important;
+  background-color: white !important;
+  color: var(--accent-color) !important;
 }
 
 .contact-type-label {
@@ -62,15 +64,15 @@
 }
 
 .add-custom-btn {
-  background: rgba(255, 255, 255, 0.8);
+  background-color: var(--bg-secondary);
 }
 
 .add-custom-btn:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background-color: var(--hover-color);
 }
 
 .add-custom-btn .contact-type-icon {
-  background: var(--bs-warning) !important;
+  background-color: var(--warning-color) !important;
 }
 
 .add-custom-btn:hover .contact-type-icon {
@@ -80,9 +82,10 @@
 .custom-type-container {
   margin-top: 2rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.9);
+  background-color: var(--bg-secondary);
   border-radius: var(--radius);
   box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: all 0.3s ease;

@@ -3,6 +3,7 @@ import * as QRCode from 'qrcode';
 import { CommonModule } from '@angular/common';
 import { ContactInfo } from '../models/contact-info';
 import { ContactService } from '../services/contact.service';
+import { ThemeService } from '../services/theme.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,17 +16,33 @@ import { Subscription } from 'rxjs';
 export class ScanMeComponent implements OnInit, OnDestroy {
   userInfo: ContactInfo[] = [];
   qrCodeDataUrl = '';
-  private subscription: Subscription;
+  private contactSubscription: Subscription;
+  private themeSubscription: Subscription;
+  isDarkTheme = false;
 
-  constructor(private contactService: ContactService) {
-    this.subscription = this.contactService.contacts$.subscribe((contacts) => {
-      this.userInfo = contacts;
-      if (this.userInfo && this.userInfo.length > 0) {
-        this.generateQRCode();
-      } else {
-        this.qrCodeDataUrl = '';
+  constructor(
+    private contactService: ContactService,
+    private themeService: ThemeService
+  ) {
+    this.contactSubscription = this.contactService.contacts$.subscribe(
+      (contacts) => {
+        this.userInfo = contacts;
+        if (this.userInfo && this.userInfo.length > 0) {
+          this.generateQRCode();
+        } else {
+          this.qrCodeDataUrl = '';
+        }
       }
-    });
+    );
+
+    this.themeSubscription = this.themeService.isDarkTheme$.subscribe(
+      (isDark) => {
+        this.isDarkTheme = isDark;
+        if (this.userInfo && this.userInfo.length > 0) {
+          this.generateQRCode();
+        }
+      }
+    );
   }
 
   ngOnInit() {
@@ -36,8 +53,11 @@ export class ScanMeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.contactSubscription) {
+      this.contactSubscription.unsubscribe();
+    }
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 
@@ -90,8 +110,8 @@ export class ScanMeComponent implements OnInit, OnDestroy {
           margin: 2,
           width: 400,
           color: {
-            dark: '#000000',
-            light: '#ffffff',
+            dark: this.isDarkTheme ? '#FFFFFF' : '#000000',
+            light: this.isDarkTheme ? '#000000' : '#FFFFFF',
           },
         });
       } catch (err) {

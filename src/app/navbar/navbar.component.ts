@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +13,9 @@ import { RouterModule, Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   isNavbarCollapsed = true;
   isScrolled = false;
+  isDarkTheme$ = this.themeService.isDarkTheme$;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private themeService: ThemeService) {}
 
   ngOnInit(): void {}
 
@@ -32,5 +34,9 @@ export class NavbarComponent implements OnInit {
 
   isActive(route: string): boolean {
     return this.router.url === route;
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 }

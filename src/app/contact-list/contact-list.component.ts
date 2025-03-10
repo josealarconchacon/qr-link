@@ -1,14 +1,16 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ContactInfo } from '../models/contact-info';
 import { ContactService } from '../services/contact.service';
+import { ThemeService } from '../services/theme.service';
 import { Subscription } from 'rxjs';
 import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <div class="contacts-page">
       <div class="container py-4 py-md-5">
@@ -16,36 +18,33 @@ import * as bootstrap from 'bootstrap';
           <div class="col-12 col-lg-10">
             <!-- Header Section -->
             <div
-              class="text-center mb-4 mb-md-5 animate__animated animate__fadeIn"
+              class="header-section text-center animate__animated animate__fadeIn"
             >
-              <h1 class="display-4 fw-bold mb-3">Your Digital Business Card</h1>
+              <h1 class="display-4 fw-bold">Your Digital Business Card</h1>
               <p class="lead text-muted">
                 All your contact information in one place
               </p>
             </div>
 
             <!-- Main Card -->
-            <div
-              class="card border-0 shadow-lg rounded-4 overflow-hidden animate__animated animate__fadeInUp"
-            >
-              <div class="card-header bg-white py-3 px-4 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h5 class="mb-1 fw-bold text-dark">Contact Information</h5>
-                    <small class="text-muted d-block fw-medium">
+            <div class="card glass-card animate__animated animate__fadeInUp">
+              <!-- Card Header -->
+              <div class="card-header">
+                <div class="header-content">
+                  <div class="header-title">
+                    <h5 class="fw-bold">Contact Information</h5>
+                    <small class="text-muted fw-medium">
                       {{ contacts.length }} contact{{
                         contacts.length !== 1 ? 's' : ''
                       }}
                     </small>
                   </div>
-                  <div class="d-flex align-items-center gap-2">
-                    <span
-                      class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2"
-                    >
+                  <div class="header-actions">
+                    <span class="contact-count">
                       {{ contacts.length }}
                     </span>
                     <button
-                      class="btn btn-outline-primary rounded-circle p-2"
+                      class="btn-icon"
                       (click)="refreshContacts()"
                       title="Refresh contacts"
                     >
@@ -56,66 +55,55 @@ import * as bootstrap from 'bootstrap';
               </div>
 
               <!-- Contact List -->
-              <div class="list-group list-group-flush">
+              <div class="contact-list">
+                <!-- Contact Items -->
                 <div
                   *ngFor="let contact of contacts; let i = index"
-                  class="list-group-item px-4 py-3 animate__animated animate__fadeInUp"
-                  [class.animate__delay-1s]="i > 0"
-                  [class.animate__delay-2s]="i > 1"
-                  [class.animate__delay-3s]="i > 2"
-                  [class.bg-light]="hoveredIndex === i"
-                  [class.border-primary-subtle]="selectedIndex === i"
-                  [class.border-start]="selectedIndex === i"
+                  class="contact-item"
+                  [class.is-hovered]="hoveredIndex === i"
+                  [class.is-selected]="selectedIndex === i"
                   (mouseenter)="hoveredIndex = i"
                   (mouseleave)="hoveredIndex = null"
                   (click)="selectContact(i)"
                   role="button"
                   tabindex="0"
                 >
-                  <div class="d-flex align-items-center gap-3">
+                  <div class="contact-item-content">
                     <!-- Contact Icon -->
                     <div
-                      class="contact-icon flex-shrink-0 position-relative shadow-sm"
+                      class="contact-icon"
                       [style.background-color]="getIconBackground(contact)"
                     >
-                      <i
-                        [class]="getContactIcon(contact)"
-                        class="text-white position-absolute top-50 start-50 translate-middle"
-                        aria-hidden="true"
-                      ></i>
+                      <i [class]="getContactIcon(contact)"></i>
                     </div>
 
                     <!-- Contact Details -->
-                    <div class="flex-grow-1 min-w-0">
-                      <div class="d-flex align-items-center gap-2">
-                        <div class="text-truncate fw-semibold text-dark">
-                          {{ contact.value }}
-                        </div>
+                    <div class="contact-details">
+                      <div class="contact-value">
+                        {{ contact.value }}
                         <span
-                          class="copied-text badge bg-success-subtle text-success fw-medium ms-auto"
-                          [class.d-none]="!copiedIndex || copiedIndex !== i"
+                          class="copied-badge"
+                          [class.is-visible]="copiedIndex === i"
                         >
                           Copied!
                         </span>
                       </div>
-                      <small class="text-muted d-block text-truncate fw-medium">
+                      <div class="contact-type">
                         {{ getDisplayType(contact) }}
-                      </small>
+                      </div>
                     </div>
 
                     <!-- Action Buttons -->
-                    <div
-                      class="action-buttons d-flex align-items-center gap-2 flex-shrink-0"
-                    >
+                    <div class="contact-actions">
                       <button
-                        class="btn btn-sm btn-outline-primary rounded-circle p-2"
+                        class="btn-icon"
                         (click)="copyContact(contact); $event.stopPropagation()"
                         [attr.aria-label]="'Copy ' + contact.value"
                       >
                         <i class="bi bi-clipboard"></i>
                       </button>
                       <button
-                        class="btn btn-sm btn-outline-danger rounded-circle p-2"
+                        class="btn-icon btn-danger"
                         (click)="removeContact(i); $event.stopPropagation()"
                         [attr.aria-label]="'Remove ' + getDisplayType(contact)"
                       >
@@ -124,38 +112,32 @@ import * as bootstrap from 'bootstrap';
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Empty State -->
-              <div
-                *ngIf="!contacts?.length"
-                class="text-center py-5 animate__animated animate__fadeIn"
-              >
-                <div class="empty-state-icon mb-4">
-                  <i class="bi bi-person-lines-fill text-muted opacity-75"></i>
-                </div>
-                <h5 class="text-muted mb-3">No contacts yet</h5>
-                <p class="text-muted mb-4">Add some contacts to get started!</p>
-                <button
-                  class="btn btn-primary btn-lg"
-                  routerLink="/set-user-info"
+                <!-- Empty State -->
+                <div
+                  *ngIf="!contacts?.length"
+                  class="empty-state animate__animated animate__fadeIn"
                 >
-                  <i class="bi bi-plus-circle me-2"></i>
-                  Add Your First Contact
-                </button>
+                  <div class="empty-state-icon">
+                    <i class="bi bi-person-lines-fill"></i>
+                  </div>
+                  <h5>No contacts yet</h5>
+                  <p>Add some contacts to get started!</p>
+                  <button class="btn btn-primary" routerLink="/set-user-info">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Your First Contact
+                  </button>
+                </div>
               </div>
             </div>
 
             <!-- Clear All Button -->
             <div
               *ngIf="contacts?.length"
-              class="text-center mt-4 animate__animated animate__fadeInUp"
+              class="clear-all-section animate__animated animate__fadeInUp"
             >
-              <button
-                class="btn btn-outline-danger btn-lg"
-                (click)="clearAllContacts()"
-              >
-                <i class="bi bi-trash3 me-2"></i>
+              <button class="btn btn-danger" (click)="clearAllContacts()">
+                <i class="bi bi-trash3"></i>
                 Clear All Contacts
               </button>
             </div>
@@ -166,116 +148,300 @@ import * as bootstrap from 'bootstrap';
   `,
   styles: [
     `
+      /* Base Layout */
       .contacts-page {
         min-height: 100vh;
-        background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
-        padding: 2rem 0;
+        background-color: var(--bg-primary);
+        padding: var(--spacing-xl) 0;
       }
 
-      .card {
-        transition: all 0.3s ease;
-        border: none;
-        background: rgba(255, 255, 255, 0.9);
+      /* Header Section */
+      .header-section {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .header-section h1 {
+        color: var(--text-primary);
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        margin-bottom: var(--spacing-sm);
+        line-height: 1.2;
+      }
+
+      .header-section .lead {
+        color: var(--text-secondary);
+        font-size: clamp(1rem, 2vw, 1.125rem);
+        margin-bottom: 0;
+      }
+
+      /* Card Styles */
+      .glass-card {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
+        transition: transform 0.3s var(--transition-timing);
       }
 
-      .card:hover {
+      .glass-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1) !important;
       }
 
-      .contact-icon {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 1rem;
+      /* Card Header */
+      .card-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-bottom: 1px solid var(--border-color);
+        background-color: var(--bg-secondary);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-title h5 {
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .header-actions {
         display: flex;
         align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
+        gap: var(--spacing-sm);
       }
 
-      .list-group-item {
-        border: none;
-        transition: all 0.2s ease;
+      .contact-count {
+        background-color: var(--accent-color);
+        color: white;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius);
+        font-weight: 600;
+        min-width: 2rem;
+        text-align: center;
+      }
+
+      /* Contact List */
+      .contact-list {
+        background-color: var(--bg-secondary);
+      }
+
+      /* Contact Item */
+      .contact-item {
+        position: relative;
+        transition: background-color 0.2s var(--transition-timing);
         cursor: pointer;
       }
 
-      .list-group-item:hover {
-        background-color: rgba(0, 0, 0, 0.02);
+      .contact-item:not(:last-child) {
+        border-bottom: 1px solid var(--border-color);
       }
 
-      .list-group-item.border-start {
-        border-left-width: 4px !important;
+      .contact-item.is-hovered {
+        background-color: var(--hover-color);
       }
 
-      .action-buttons {
-        opacity: 0;
-        transition: all 0.2s ease;
+      .contact-item.is-selected {
+        border-left: 4px solid var(--accent-color);
       }
 
-      .list-group-item:hover .action-buttons {
-        opacity: 1;
+      .contact-item-content {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md) var(--spacing-lg);
       }
 
-      .btn-sm {
-        width: 2.5rem;
-        height: 2.5rem;
+      /* Contact Icon */
+      .contact-icon {
+        flex-shrink: 0;
+        width: 3rem;
+        height: 3rem;
+        border-radius: var(--radius);
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s ease;
+        transition: transform 0.2s var(--transition-timing);
       }
 
-      .btn-sm:hover {
-        transform: scale(1.1);
+      .contact-icon i {
+        color: white;
+        font-size: 1.25rem;
       }
 
-      .copied-text {
-        transition: all 0.2s ease;
+      .contact-item:hover .contact-icon {
+        transform: scale(1.05);
+      }
+
+      /* Contact Details */
+      .contact-details {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .contact-value {
+        color: var(--text-primary);
+        font-size: 1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .contact-type {
+        color: var(--text-secondary);
         font-size: 0.875rem;
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
+      }
+
+      /* Copied Badge */
+      .copied-badge {
+        background-color: var(--success-color);
+        color: white;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--radius);
+        opacity: 0;
+        transition: opacity 0.2s var(--transition-timing);
+      }
+
+      .copied-badge.is-visible {
+        opacity: 1;
+      }
+
+      /* Action Buttons */
+      .contact-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+        opacity: 0;
+        transition: opacity 0.2s var(--transition-timing);
+      }
+
+      .contact-item:hover .contact-actions {
+        opacity: 1;
+      }
+
+      /* Button Styles */
+      .btn-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0;
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s var(--transition-timing);
+        cursor: pointer;
+      }
+
+      .btn-icon:hover {
+        transform: scale(1.1);
+        background-color: var(--hover-color);
+      }
+
+      .btn-icon i {
+        font-size: 1.125rem;
+      }
+
+      .btn-icon.btn-danger {
+        color: var(--danger-color);
+        border-color: var(--danger-color);
+      }
+
+      .btn-icon.btn-danger:hover {
+        background-color: var(--danger-color);
+        color: white;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: var(--spacing-xl);
       }
 
       .empty-state-icon {
-        font-size: 4rem;
+        font-size: 3rem;
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-md);
       }
 
-      @media (prefers-color-scheme: dark) {
-        .contacts-page {
-          background: linear-gradient(135deg, #1a1f36 0%, #2d3748 100%);
-        }
-
-        .card {
-          background: rgba(255, 255, 255, 0.1);
-        }
-
-        .list-group-item {
-          background: transparent;
-        }
-
-        .list-group-item:hover {
-          background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .text-dark {
-          color: #f8fafc !important;
-        }
-
-        .text-muted {
-          color: #94a3b8 !important;
-        }
+      .empty-state h5 {
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        margin-bottom: var(--spacing-sm);
       }
 
+      .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      /* Clear All Section */
+      .clear-all-section {
+        text-align: center;
+        margin-top: var(--spacing-xl);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: var(--radius);
+        font-weight: 500;
+        transition: all 0.2s var(--transition-timing);
+      }
+
+      .btn i {
+        font-size: 1.125rem;
+      }
+
+      .btn-primary {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--accent-dark);
+        transform: translateY(-1px);
+      }
+
+      .btn-danger {
+        background-color: transparent;
+        color: var(--danger-color);
+        border: 1px solid var(--danger-color);
+      }
+
+      .btn-danger:hover {
+        background-color: var(--danger-color);
+        color: white;
+        transform: translateY(-1px);
+      }
+
+      /* Responsive Styles */
       @media (max-width: 576px) {
         .contacts-page {
-          padding: 1rem 0;
+          padding: var(--spacing-md) 0;
         }
 
-        .container {
-          padding-left: 1rem;
-          padding-right: 1rem;
+        .glass-card {
+          border-radius: var(--radius);
+        }
+
+        .card-header {
+          padding: var(--spacing-sm) var(--spacing-md);
+        }
+
+        .contact-item-content {
+          padding: var(--spacing-sm) var(--spacing-md);
+          gap: var(--spacing-sm);
         }
 
         .contact-icon {
@@ -283,24 +449,35 @@ import * as bootstrap from 'bootstrap';
           height: 2.5rem;
         }
 
-        .btn-sm {
+        .contact-icon i {
+          font-size: 1rem;
+        }
+
+        .btn-icon {
           width: 2rem;
           height: 2rem;
         }
 
-        .copied-text {
-          font-size: 0.75rem;
-          padding: 0.25rem 0.75rem;
+        .btn-icon i {
+          font-size: 1rem;
+        }
+
+        .empty-state {
+          padding: var(--spacing-lg);
+        }
+
+        .empty-state-icon {
+          font-size: 2.5rem;
         }
       }
 
-      @media (min-width: 576px) and (max-width: 768px) {
+      @media (min-width: 577px) and (max-width: 768px) {
         .contact-icon {
           width: 2.75rem;
           height: 2.75rem;
         }
 
-        .btn-sm {
+        .btn-icon {
           width: 2.25rem;
           height: 2.25rem;
         }
@@ -310,111 +487,100 @@ import * as bootstrap from 'bootstrap';
 })
 export class ContactListComponent implements OnInit, OnDestroy, AfterViewInit {
   contacts: ContactInfo[] = [];
-  private subscription: Subscription | undefined;
   hoveredIndex: number | null = null;
   selectedIndex: number | null = null;
   copiedIndex: number | null = null;
+  private contactSubscription: Subscription;
 
-  constructor(private contactService: ContactService) {}
-
-  ngOnInit() {
-    this.subscription = this.contactService.contacts$.subscribe((contacts) => {
-      this.contacts = contacts;
-    });
-  }
-
-  ngAfterViewInit() {
-    const tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    tooltipTriggerList.map(
-      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+  constructor(private contactService: ContactService) {
+    this.contactSubscription = this.contactService.contacts$.subscribe(
+      (contacts) => {
+        this.contacts = contacts;
+      }
     );
   }
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {}
+
+  ngOnDestroy(): void {
+    if (this.contactSubscription) {
+      this.contactSubscription.unsubscribe();
     }
   }
 
   getContactIcon(contact: ContactInfo): string {
-    const iconMap: { [key: string]: string } = {
-      Phone: 'bi-telephone',
-      Email: 'bi-envelope',
-      LinkedIn: 'bi-linkedin',
-      GitHub: 'bi-github',
-      Website: 'bi-globe',
-      Twitter: 'bi-twitter',
-      Instagram: 'bi-instagram',
-    };
-
     if (contact.type === 'Custom' && contact.customIcon) {
       return contact.customIcon;
     }
 
-    return iconMap[contact.type] || 'bi-person';
-  }
+    const iconMap: { [key: string]: string } = {
+      Phone: 'bi bi-phone',
+      Email: 'bi bi-envelope',
+      LinkedIn: 'bi bi-linkedin',
+      GitHub: 'bi bi-github',
+      Website: 'bi bi-globe',
+      Twitter: 'bi bi-twitter',
+      Instagram: 'bi bi-instagram',
+    };
 
-  getDisplayType(contact: ContactInfo): string {
-    return (
-      contact.customType ||
-      contact.type.charAt(0).toUpperCase() + contact.type.slice(1)
-    );
+    return iconMap[contact.type] || 'bi bi-person';
   }
 
   getIconBackground(contact: ContactInfo): string {
-    const colorMap: { [key: string]: string } = {
-      Phone: '#10B981',
-      Email: '#3B82F6',
-      LinkedIn: '#0EA5E9',
-      GitHub: '#1F2937',
-      Website: '#8B5CF6',
-      Twitter: '#0EA5E9',
-      Instagram: '#EF4444',
-    };
-
     if (contact.type === 'Custom' && contact.customColor) {
-      return `var(--bs-${contact.customColor})`;
+      return `var(--${contact.customColor})`;
     }
 
-    return colorMap[contact.type] || '#3B82F6';
+    const colorMap: { [key: string]: string } = {
+      Phone: 'var(--success-color)',
+      Email: 'var(--primary-color)',
+      LinkedIn: 'var(--info-color)',
+      GitHub: 'var(--dark-color)',
+      Website: 'var(--purple-color)',
+      Twitter: 'var(--info-color)',
+      Instagram: 'var(--danger-color)',
+    };
+
+    return colorMap[contact.type] || 'var(--accent-color)';
   }
 
-  selectContact(index: number) {
+  getDisplayType(contact: ContactInfo): string {
+    return contact.type === 'Custom'
+      ? contact.customType || 'Custom'
+      : contact.type;
+  }
+
+  selectContact(index: number): void {
     this.selectedIndex = this.selectedIndex === index ? null : index;
   }
 
-  async copyContact(contact: ContactInfo) {
-    const text = `${this.getDisplayType(contact)}: ${contact.value}`;
-    try {
-      await navigator.clipboard.writeText(text);
-      this.copiedIndex = this.contacts.indexOf(contact);
-      setTimeout(() => (this.copiedIndex = null), 2000);
-    } catch (err) {
-      console.error('Failed to copy contact:', err);
-    }
+  copyContact(contact: ContactInfo): void {
+    navigator.clipboard.writeText(contact.value).then(() => {
+      const index = this.contacts.indexOf(contact);
+      this.copiedIndex = index;
+      setTimeout(() => {
+        if (this.copiedIndex === index) {
+          this.copiedIndex = null;
+        }
+      }, 2000);
+    });
   }
 
-  removeContact(index: number) {
+  removeContact(index: number): void {
     const updatedContacts = [...this.contacts];
     updatedContacts.splice(index, 1);
     this.contactService.updateContacts(updatedContacts);
   }
 
-  clearAllContacts() {
-    this.contactService.clearContacts();
+  clearAllContacts(): void {
+    this.contactService.updateContacts([]);
   }
 
-  refreshContacts() {
-    const savedContacts = localStorage.getItem('userContacts');
-    if (savedContacts) {
-      try {
-        const contacts = JSON.parse(savedContacts);
-        this.contactService.updateContacts(contacts);
-      } catch (error) {
-        console.error('Error refreshing contacts:', error);
-      }
-    }
+  refreshContacts(): void {
+    // Trigger a refresh animation or reload if needed
+    this.selectedIndex = null;
+    this.hoveredIndex = null;
   }
 }

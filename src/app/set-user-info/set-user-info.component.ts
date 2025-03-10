@@ -77,7 +77,7 @@ import { ContactListComponent } from '../components/contact-list/contact-list.co
       :host {
         display: block;
         width: 100%;
-        background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+        background-color: var(--bg-primary);
         padding: var(--spacing-md);
       }
 
@@ -88,10 +88,10 @@ import { ContactListComponent } from '../components/contact-list/contact-list.co
       }
 
       .glass-card {
-        background: rgba(255, 255, 255, 0.7);
+        background-color: var(--bg-secondary);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius);
         box-shadow: var(--shadow-lg);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -105,7 +105,7 @@ import { ContactListComponent } from '../components/contact-list/contact-list.co
       .card-title {
         font-size: clamp(1.5rem, 4vw, 2.25rem);
         font-weight: 700;
-        color: #1a1f36;
+        color: var(--text-primary);
         margin-bottom: var(--spacing-md);
         letter-spacing: -0.02em;
         line-height: 1.2;
@@ -113,26 +113,26 @@ import { ContactListComponent } from '../components/contact-list/contact-list.co
 
       .card-subtitle {
         font-size: clamp(0.875rem, 2vw, 1.125rem);
-        color: #4f566b;
+        color: var(--text-secondary);
         font-weight: 400;
         line-height: 1.5;
       }
 
-      @media (prefers-color-scheme: dark) {
-        :host {
-          background: linear-gradient(135deg, #1a1f36 0%, #2d3748 100%);
+      .card-header {
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .card-body {
+        background-color: var(--bg-secondary);
+      }
+
+      @media (max-width: 768px) {
+        .contact-container {
+          padding: 0.5rem;
         }
 
         .glass-card {
-          background: rgba(255, 255, 255, 0.1);
-        }
-
-        .card-title {
-          color: #f8fafc;
-        }
-
-        .card-subtitle {
-          color: #94a3b8;
+          border-radius: var(--radius);
         }
       }
     `,

@@ -6,22 +6,23 @@
   height: 68px;
   font-size: clamp(1rem, 2vw, 1.125rem);
   border-radius: var(--radius);
-  border: 2px solid #e2e8f0;
-  background-color: #ffffff;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   transition: all var(--animation-timing);
   padding: var(--spacing-lg) var(--spacing-xl);
   box-shadow: var(--shadow-sm);
 }
 
 .contact-input .form-floating > .form-control:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px var(--shadow-color);
   transform: translateY(-1px);
 }
 
 .contact-input .form-floating > label {
   padding: 1.25rem 1.5rem;
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 500;
   transition: all 0.3s ease;
 }
@@ -29,19 +30,20 @@
 .contact-input .form-floating > .form-control:focus ~ label,
 .contact-input .form-floating > .form-control:not(:placeholder-shown) ~ label {
   transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
-  color: #3b82f6;
+  color: var(--accent-color);
 }
 
 .contact-input .btn-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background-color: var(--accent-color);
   border: none;
-  border-radius: 20px;
+  border-radius: var(--radius);
   font-weight: 600;
   font-size: 1.125rem;
   padding: 1.25rem 2rem;
   transition: all 0.3s var(--animation-timing);
   position: relative;
   overflow: hidden;
+  color: white;
 }
 
 .contact-input .btn-primary::before {
@@ -66,30 +68,13 @@
 
 .contact-input .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.25);
+  box-shadow: var(--shadow-lg);
+  background-color: var(--primary-dark);
 }
 
 .contact-input .btn-primary:disabled {
-  background-color: #94a3b8;
+  background-color: var(--text-secondary);
   opacity: 0.7;
-}
-
-.dark .contact-input .form-floating > .form-control {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .contact-input .form-floating > label {
-  color: #94a3b8;
-}
-
-.dark .contact-input .form-floating > .form-control:focus ~ label,
-.dark
-  .contact-input
-  .form-floating
-  > .form-control:not(:placeholder-shown)
-  ~ label {
-  color: #60a5fa;
 }
 
 @media (max-width: 576px) {

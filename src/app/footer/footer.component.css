@@ -1,38 +1,23 @@
 .custom-footer {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
-  padding: 0;
+  background-color: var(--bg-secondary);
+  box-shadow: 0 -2px 4px var(--shadow-color);
+  padding: 1.5rem 0;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-}
-
-.custom-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 0, 0, 0.1),
-    transparent
-  );
+  border-top: 1px solid var(--border-color);
 }
 
 .footer-text {
-  font-family: "Poppins", sans-serif;
   font-size: 0.95rem;
-  color: #6c757d;
+  color: var(--text-secondary);
   transition: color 0.3s ease;
   position: relative;
   display: inline-block;
 }
 
 .footer-text:hover {
-  color: #007bff;
+  color: var(--accent-color);
 }
 
 .footer-text::after {
@@ -42,7 +27,7 @@
   height: 1px;
   bottom: -2px;
   left: 0;
-  background-color: #007bff;
+  background-color: var(--accent-color);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s ease;
@@ -54,7 +39,7 @@
 }
 
 .back-to-top {
-  border-radius: 20px;
+  border-radius: var(--radius);
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -62,15 +47,15 @@
   align-items: center;
   gap: 0.5rem;
   background: transparent;
-  border: 2px solid #007bff;
-  color: #007bff;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
 }
 
 .back-to-top:hover {
-  background-color: #007bff;
-  color: #fff;
+  background-color: var(--accent-color);
+  color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .back-to-top i {
@@ -100,49 +85,6 @@
   .footer-text,
   .back-to-top {
     margin-bottom: 1rem !important;
-  }
-
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .custom-footer {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  }
-
-  .custom-footer::before {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.1),
-      transparent
-    );
-  }
-
-  .footer-text {
-    color: #a0aec0;
-  }
-
-  .footer-text:hover {
-    color: #60a5fa;
-  }
-
-  .footer-text::after {
-    background-color: #60a5fa;
-  }
-
-  .back-to-top {
-    border-color: #60a5fa;
-    color: #60a5fa;
-  }
-
-  .back-to-top:hover {
-    background-color: #60a5fa;
-    color: #fff;
   }
 }
 

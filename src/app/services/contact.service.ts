@@ -10,7 +10,6 @@ export class ContactService {
   contacts$ = this.contactsSubject.asObservable();
 
   constructor() {
-    // Load contacts from localStorage on service initialization
     const savedContacts = localStorage.getItem('userContacts');
     if (savedContacts) {
       try {

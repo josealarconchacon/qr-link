@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Subscribe to theme changes
     this.themeService.isDarkTheme$.subscribe((isDark) => {
       document.body.style.backgroundColor = isDark
         ? 'var(--bg-primary)'

@@ -1,42 +1,47 @@
+<!-- Main Navigation -->
 <nav
-  class="navbar navbar-expand-lg fixed-top custom-navbar"
+  class="navbar"
   [class.scrolled]="isScrolled"
   role="navigation"
   aria-label="Main navigation"
 >
   <div class="container">
-    <!-- Brand -->
     <a class="navbar-brand" routerLink="/scan-me" aria-label="Connect - Home">
-      <i
-        class="bi bi-qr-code-scan animate__animated animate__pulse animate__infinite"
-        aria-hidden="true"
-      ></i>
+      <div class="brand-icon">
+        <i
+          class="bi bi-qr-code-scan animate__animated animate__pulse animate__infinite"
+          aria-hidden="true"
+        ></i>
+      </div>
       <span class="brand-text">Connect</span>
     </a>
 
-    <!-- Toggler -->
     <button
-      class="navbar-toggler custom-toggler"
+      class="menu-button"
       type="button"
       (click)="toggleNavbar()"
       [attr.aria-expanded]="!isNavbarCollapsed"
       aria-controls="navbarNav"
       aria-label="Toggle navigation menu"
     >
-      <span class="navbar-toggler-icon" aria-hidden="true"></span>
+      <i
+        class="bi"
+        [class.bi-list]="isNavbarCollapsed"
+        [class.bi-x-lg]="!isNavbarCollapsed"
+        aria-hidden="true"
+      ></i>
     </button>
 
-    <!-- Navbar Content -->
     <div
-      class="collapse navbar-collapse"
+      class="nav-menu"
       [class.show]="!isNavbarCollapsed"
       id="navbarNav"
       role="menubar"
     >
-      <ul class="navbar-nav ms-auto align-items-lg-center">
+      <ul class="nav-list">
         <li class="nav-item" role="none">
           <button
-            class="nav-link custom-nav-link theme-toggle-btn"
+            class="nav-link theme-toggle"
             (click)="toggleTheme()"
             role="button"
             aria-label="Toggle dark mode"
@@ -47,11 +52,13 @@
               [class.bi-sun]="isDarkTheme$ | async"
               aria-hidden="true"
             ></i>
+            <span class="nav-text">Theme</span>
           </button>
         </li>
+
         <li class="nav-item" role="none">
           <a
-            class="nav-link custom-nav-link"
+            class="nav-link"
             routerLink="/set-user-info"
             routerLinkActive="active"
             (click)="closeNavbar()"
@@ -59,13 +66,13 @@
             [attr.aria-current]="isActive('/set-user-info') ? 'page' : null"
           >
             <i class="bi bi-person-plus" aria-hidden="true"></i>
-            <span>Add Contact</span>
+            <span class="nav-text">Add Contact</span>
           </a>
         </li>
 
         <li class="nav-item" role="none">
           <a
-            class="nav-link custom-nav-link"
+            class="nav-link"
             routerLink="/contact-list"
             routerLinkActive="active"
             (click)="closeNavbar()"
@@ -73,7 +80,7 @@
             [attr.aria-current]="isActive('/contact-list') ? 'page' : null"
           >
             <i class="bi bi-list" aria-hidden="true"></i>
-            <span>Contacts</span>
+            <span class="nav-text">Contacts</span>
           </a>
         </li>
       </ul>

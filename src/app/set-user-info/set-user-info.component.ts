@@ -20,123 +20,47 @@ import { ContactListComponent } from '../components/contact-list/contact-list.co
     ContactListComponent,
   ],
   template: `
-    <div class="contact-container">
-      <div class="card glass-card">
-        <div class="card-header bg-transparent text-center">
-          <h1 class="card-title">Let's create your digital business card</h1>
-          <p class="card-subtitle">Choose how people can reach you</p>
-        </div>
+    <div class="page-container">
+      <div class="container">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="card-title">Let's create your digital business card</h1>
+            <p class="card-subtitle">Choose how people can reach you</p>
+          </div>
 
-        <div class="card-body p-4">
-          <app-contact-type-selector
-            [contactTypes]="allContactTypes"
-            [selectedType]="newContactType"
-            [isAddingCustom]="isAddingCustom"
-            (typeSelect)="onTypeSelect($event)"
-          >
-            <app-custom-type-creator
-              *ngIf="isAddingCustom"
-              [availableIcons]="availableIcons"
-              [availableColors]="availableColors"
-              (add)="onCustomTypeAdd($event)"
-              (cancel)="onCustomTypeCancel()"
-            ></app-custom-type-creator>
-          </app-contact-type-selector>
+          <div class="card-body">
+            <div class="selector-section">
+              <app-contact-type-selector
+                [contactTypes]="allContactTypes"
+                [selectedType]="newContactType"
+                [isAddingCustom]="isAddingCustom"
+                (typeSelect)="onTypeSelect($event)"
+              >
+                <app-custom-type-creator
+                  *ngIf="isAddingCustom"
+                  [availableIcons]="availableIcons"
+                  [availableColors]="availableColors"
+                  (add)="onCustomTypeAdd($event)"
+                  (cancel)="onCustomTypeCancel()"
+                ></app-custom-type-creator>
+              </app-contact-type-selector>
+            </div>
 
-          <app-contact-input
-            *ngIf="newContactType"
-            [selectedType]="newContactType"
-            [customType]="newCustomContact.type"
-            [customIcon]="newCustomContact.icon"
-            [customColor]="newCustomContact.color"
-            (add)="onContactAdd($event)"
-          ></app-contact-input>
+            <div class="input-section" *ngIf="newContactType">
+              <app-contact-input
+                [selectedType]="newContactType"
+                [customType]="newCustomContact.type"
+                [customIcon]="newCustomContact.icon"
+                [customColor]="newCustomContact.color"
+                (add)="onContactAdd($event)"
+              ></app-contact-input>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   `,
-  styles: [
-    `
-      :root {
-        --spacing-xs: 0.25rem;
-        --spacing-sm: 0.5rem;
-        --spacing-md: 1rem;
-        --spacing-lg: 1.5rem;
-        --spacing-xl: 2rem;
-        --spacing-xxl: 2.5rem;
-
-        --border-radius-sm: 12px;
-        --border-radius-md: 16px;
-        --border-radius-lg: 24px;
-        --border-radius-xl: 28px;
-
-        --transition-speed: 0.3s;
-        --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      :host {
-        display: block;
-        width: 100%;
-        background-color: var(--bg-primary);
-        padding: var(--spacing-md);
-      }
-
-      .contact-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 1rem;
-      }
-
-      .glass-card {
-        background-color: var(--bg-secondary);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-lg);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .glass-card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-xl);
-      }
-
-      .card-title {
-        font-size: clamp(1.5rem, 4vw, 2.25rem);
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-md);
-        letter-spacing: -0.02em;
-        line-height: 1.2;
-      }
-
-      .card-subtitle {
-        font-size: clamp(0.875rem, 2vw, 1.125rem);
-        color: var(--text-secondary);
-        font-weight: 400;
-        line-height: 1.5;
-      }
-
-      .card-header {
-        border-bottom: 1px solid var(--border-color);
-      }
-
-      .card-body {
-        background-color: var(--bg-secondary);
-      }
-
-      @media (max-width: 768px) {
-        .contact-container {
-          padding: 0.5rem;
-        }
-
-        .glass-card {
-          border-radius: var(--radius);
-        }
-      }
-    `,
-  ],
+  styleUrls: ['./set-user-info.component.css'],
 })
 export class SetUserInfoComponent implements OnInit {
   defaultContactTypes: ContactType[] = [

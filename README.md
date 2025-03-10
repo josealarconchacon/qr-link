@@ -1,27 +1,81 @@
-# QrLink
+# QR Link
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+A modern web application that simplifies networking and contact sharing through QR code technology. Built with Angular, this application allows users to create, manage, and share their contact information instantly using QR codes.
 
-## Development server
+## Key Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- 📱 QR Code Generation: Create unique QR codes for your contact information
+- 📷 QR Code Scanner: Built-in scanner for reading QR codes
+- 🔄 Real-time Updates: Instant QR code generation and scanning
+- 📊 User Profile Management: Customize and update your contact information
+- 🎨 Modern UI: Clean and responsive design with Material Design
 
-## Code scaffolding
+## Technologies Used
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Angular 16.2.0
+- Angular Material
+- Bootstrap 5.3
+- HTML5-QRCode
+- QRCode.js
+- TypeScript
+- RxJS
 
-## Build
+## Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Clone the repository:
 
-## Running unit tests
+```bash
+git clone [https://github.com/josealarconchacon/qr-link.git]
+cd qr-link
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+2. Install dependencies:
 
-## Running end-to-end tests
+```bash
+npm install
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+3. Run the development server:
 
-## Further help
+```bash
+npm start
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+4. Open your browser and navigate to `http://localhost:4200`
+
+## Usage
+
+1. Create your profile by entering your contact information
+2. Generate a QR code for your contact details
+3. Use the built-in scanner to read QR codes from other users
+4. Manage your contacts in the contact list
+
+## Development
+
+- Build for production:
+
+```bash
+npm run build
+```
+
+- Run tests:
+
+```bash
+npm test
+```
+
+## Future Improvements
+
+- Contact Management: Save and organize your contacts
+- Additional contact information fields
+- Export/Import contact functionality
+- Contact groups and organization
+- Advanced QR code customization
+- Share your QR code with others
+- Enhanced UI/UX features
+- Offline support
+- Firebase
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome!
